@@ -19,6 +19,8 @@ impl MainView {
                 let _ = cx.update(|window, _| {
                     objc2_app_kit::NSApplication::sharedApplication(platform::mtm()).unhideWithoutActivation();
                     if let Some(w) = platform::ns_window(window) {
+                        // Above other apps' windows, which would otherwise hide it and stop its drawing.
+                        w.setLevel(objc2_app_kit::NSFloatingWindowLevel);
                         w.orderFrontRegardless();
                     }
                     eprintln!("debug background: shown");
