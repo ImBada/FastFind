@@ -1,0 +1,50 @@
+[workspace]
+members = [".", "crates/fastfind-core"]
+resolver = "2"
+
+[package]
+name = "fastfind"
+version = "1.0.0"
+edition = "2021"
+description = "FastFind — a Rust/NativeGPUI port of SearchEverything"
+license = "MIT"
+publish = false
+default-run = "fastfind"
+
+[[bin]]
+name = "fastfind"
+path = "src/main.rs"
+
+[dependencies]
+fastfind-core = { path = "crates/fastfind-core" }
+
+# NativeGPUI and the exact GPUI revision it is built against (see its README).
+native-gpui = { git = "https://github.com/Cafekery/NativeGPUI", rev = "21d8004ed8558154963463be0e532501529b15b0" }
+gpui = { git = "https://github.com/zed-industries/zed", rev = "90d8514059561f0e44af0a32e84e1c329cef3232" }
+gpui_platform = { git = "https://github.com/zed-industries/zed", rev = "90d8514059561f0e44af0a32e84e1c329cef3232", features = ["font-kit"] }
+
+objc2 = "0.6"
+objc2-foundation = "0.3.2"
+objc2-app-kit = "0.3.2"
+block2 = "0.6"
+raw-window-handle = "0.6"
+futures = "0.3"
+serde_json = "1"
+libc = "0.2"
+
+[dev-dependencies]
+tempfile = "3"
+
+[patch."https://github.com/zed-industries/zed"]
+gpui_macos = { git = "https://github.com/Cafekery/NativeGPUI", rev = "21d8004ed8558154963463be0e532501529b15b0" }
+
+[profile.dev]
+# GPUI is unusably slow unoptimised; keep our own crates debuggable.
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3
+
+[profile.release]
+lto = "thin"
+codegen-units = 16

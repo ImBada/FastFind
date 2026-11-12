@@ -1,0 +1,4 @@
+[toolchain]
+# NativeGPUI needs Rust 1.97 or later.
+channel = "1.99.1"
+profile = "minimal"
